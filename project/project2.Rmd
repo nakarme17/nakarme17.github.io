@@ -1,7 +1,7 @@
 ---
 title: "Project 2"
 author: "Nakia Armendariz nua73"
-date: "5/1/2021"
+date: "2021-05-01"
 output: html_document
 ---
 

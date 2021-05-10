@@ -60,7 +60,7 @@
  
 <div class="blog-title">
           <h4>
-         January 1, 0001 
+         May 1, 2021 
             &nbsp;&nbsp;
             
           </h4>
@@ -179,17 +179,17 @@ head(visits)</code></pre>
 ## 1       -0.830</code></pre>
 <pre class="r"><code>head(perm1&lt;-data.frame(sex = visits$sex, mdu = sample(visits$mdu)))</code></pre>
 <pre><code>##           sex mdu
-## 1 male visits   0
-## 2 male visits   2
+## 1 male visits   6
+## 2 male visits   9
 ## 3 male visits   0
-## 4 male visits   2
-## 5 male visits   3
-## 6 male visits   0</code></pre>
+## 4 male visits   8
+## 5 male visits   2
+## 6 male visits   4</code></pre>
 <pre class="r"><code>perm1 %&gt;% group_by(sex) %&gt;% summarize(means=mean(mdu)) %&gt;% summarize(`mean_diff:`=diff(means))</code></pre>
 <pre><code>## # A tibble: 1 x 1
 ##   `mean_diff:`
 ##          &lt;dbl&gt;
-## 1       0.0810</code></pre>
+## 1       -0.129</code></pre>
 <pre class="r"><code>rand.dist&lt;-vector()
 for(i in 1:5000){
   new &lt;- data.frame(mdu = sample(visits$mdu), sex = visits$sex)
