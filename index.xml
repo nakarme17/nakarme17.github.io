@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>My Site</title>
+    <link>/</link>
+    <description>Recent content on My Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Sun, 09 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Blog Post</title>
+      <link>/post/2021/05/09/my-post/</link>
+      <pubDate>Sun, 09 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2021/05/09/my-post/</guid>
+      <description> # Python Code nakia_bio ={ &amp;#39;firstName&amp;#39;: &amp;#39;Nakia&amp;#39;, &amp;#39;middleName&amp;#39;: &amp;#39;Ulysses&amp;#39;, &amp;#39;lastName&amp;#39;: &amp;#39;Armendariz&amp;#39;, &amp;#39;hobbies&amp;#39;: [&amp;#39;basketball&amp;#39;, &amp;#39;tennis&amp;#39;, &amp;#39;racquetball&amp;#39;], &amp;#39;siblings&amp;#39;: [&amp;#39;Naomy&amp;#39;, &amp;#39;Kiabet&amp;#39;], &amp;#39;age&amp;#39;: 22, } nakia_bio[&amp;#39;hobbies&amp;#39;].append(&amp;#39;spikeball&amp;#39;) print(nakia_bio.keys()) ## dict_keys([&amp;#39;firstName&amp;#39;, &amp;#39;middleName&amp;#39;, &amp;#39;lastName&amp;#39;, &amp;#39;hobbies&amp;#39;, &amp;#39;siblings&amp;#39;, &amp;#39;age&amp;#39;]) print(nakia_bio.values()) ## dict_values([&amp;#39;Nakia&amp;#39;, &amp;#39;Ulysses&amp;#39;, &amp;#39;Armendariz&amp;#39;, [&amp;#39;basketball&amp;#39;, &amp;#39;tennis&amp;#39;, &amp;#39;racquetball&amp;#39;, &amp;#39;spikeball&amp;#39;], [&amp;#39;Naomy&amp;#39;, &amp;#39;Kiabet&amp;#39;], 22]) print(nakia_bio) ## {&amp;#39;firstName&amp;#39;: &amp;#39;Nakia&amp;#39;, &amp;#39;middleName&amp;#39;: &amp;#39;Ulysses&amp;#39;, &amp;#39;lastName&amp;#39;: &amp;#39;Armendariz&amp;#39;, &amp;#39;hobbies&amp;#39;: [&amp;#39;basketball&amp;#39;, &amp;#39;tennis&amp;#39;, &amp;#39;racquetball&amp;#39;, &amp;#39;spikeball&amp;#39;], &amp;#39;siblings&amp;#39;: [&amp;#39;Naomy&amp;#39;, &amp;#39;Kiabet&amp;#39;], &amp;#39;age&amp;#39;: 22} # R Code library(reticulate) py$nakia_bio[&amp;#39;middleName&amp;#39;] ## $middleName ## [1] &amp;quot;Ulysses&amp;quot; py$nakia_bio[&amp;#39;siblings&amp;#39;] ## $siblings ## [1] &amp;quot;Naomy&amp;quot; &amp;quot;Kiabet&amp;quot; py$nakia_bio[&amp;#39;hobbies&amp;#39;] ## $hobbies ## [1] &amp;quot;basketball&amp;quot; &amp;quot;tennis&amp;quot; &amp;quot;racquetball&amp;quot; &amp;quot;spikeball&amp;quot; </description>
+    </item>
+    
+    <item>
+      <title>Project 1</title>
+      <link>/project/project1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/project/project1/</guid>
+      <description>For this project, I decided to look into mean SAT scores and graduation rates of all school districts in the state of Texas. I felt like there must be some sort of correlation between a district’s SAT score and their graduation rates. I tried to find data sets already in R but none of them really interested me. I happened upon the Texas Education Agency website and found that they had this data by graduation year.</description>
+    </item>
+    
+    <item>
+      <title>Project 2</title>
+      <link>/project/project2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/project/project2/</guid>
+      <description>In this project I looked into a data set that contained personal information about individuals who had contact with medical doctors from 1977 to 1978. The data set didn’t specify what country the information was collected from. Although there are many interesting variables that I think would be interesting to see interactions with, I chose to only focus on the ones that I deem more important. I primarily focused on the number of visits to an outpatient doctor (mdu), age of the individual, health of the individual, and the sex of the individual.</description>
+    </item>
+    
+    <item>
+      <title>Projects</title>
+      <link>/projects/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/projects/</guid>
+      <description> Check out some of my coding projects below:
+ Wrangling &amp;amp; Exploratory Data Analysis
+ Modeling, Inference, Prediction
+  -- </description>
+    </item>
+    
+    <item>
+      <title>Resume</title>
+      <link>/resume/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/resume/</guid>
+      <description>    </description>
+    </item>
+    
+  </channel>
+</rss>

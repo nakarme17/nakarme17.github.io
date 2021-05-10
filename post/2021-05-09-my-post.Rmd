@@ -1,0 +1,40 @@
+---
+title: Blog Post
+author: ''
+date: '2021-05-09'
+slug: my-post
+categories: []
+tags: []
+description: ''
+---
+![](/post/2021-05-09-my-post_files/basketball.jpeg)
+```{python}
+# Python Code
+nakia_bio ={
+'firstName': 'Nakia',
+'middleName': 'Ulysses',
+'lastName': 'Armendariz',
+'hobbies': ['basketball', 'tennis', 'racquetball'],
+'siblings': ['Naomy', 'Kiabet'],
+'age': 22,
+}
+
+nakia_bio['hobbies'].append('spikeball')
+print(nakia_bio.keys())
+print(nakia_bio.values())
+print(nakia_bio)
+```
+
+
+```{R}
+# R Code
+library(reticulate)
+
+py$nakia_bio['middleName']
+```
+```{R}
+py$nakia_bio['siblings']
+```
+```{R}
+py$nakia_bio['hobbies']
+```

@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Nakia Armendariz" />
+    
+    <link rel="shortcut icon" type="image/x-icon" href="../../img/favicon.ico">
+    <title>Project 2</title>
+    <meta name="generator" content="Hugo 0.83.1" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="../../"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="../../post/">BLOG</a></li>
+        
+        <li><a href="../../projects/">PROJECTS</a></li>
+        
+        <li><a href="../../resume/">RESUME</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="../../project/project2/">Project 2</a></strong>
+          </h3>
+        </div>
+ 
+<div class="blog-title">
+          <h4>
+         January 1, 0001 
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+
+<p><strong>In this project I looked into a data set that contained personal information about individuals who had contact with medical doctors from 1977 to 1978. The data set didn’t specify what country the information was collected from. Although there are many interesting variables that I think would be interesting to see interactions with, I chose to only focus on the ones that I deem more important. I primarily focused on the number of visits to an outpatient doctor (mdu), age of the individual, health of the individual, and the sex of the individual. There are other variables that recorded income and family size that I think would be cool to look at, but for the sake of this project I decided not to focus on these (yet). I was working with 20,186 observations in this project.</strong></p>
+<pre class="r"><code>DoctorContacts &lt;- read.csv(&quot;DoctorContacts.csv&quot;)
+DCs &lt;- DoctorContacts %&gt;% select(-lc, -idp, -lpi, -fmde, -child, -black)
+
+head(DCs)</code></pre>
+<pre><code>## X mdu physlim ndisease health linc lfam educdec age sex
+## 1 1 0 FALSE 13.73189 good 9.528776 1.386294 12 42.87748
+male
+## 2 2 2 FALSE 13.73189 good 9.528776 1.386294 12 43.87748
+male
+## 3 3 0 FALSE 13.73189 good 9.528776 1.386294 12 44.87748
+male
+## 4 4 0 FALSE 13.73189 good 9.528776 1.386294 12 45.87748
+male
+## 5 5 0 FALSE 13.73189 good 9.528776 1.386294 12 46.87748
+male
+## 6 6 0 FALSE 13.73189 excellent 9.528776 1.386294 12
+16.59138 male</code></pre>
+<p>MANOVA TEST</p>
+<pre class="r"><code>manova.1 &lt;- manova(cbind(mdu, age) ~ health, data = DCs)
+
+summary(manova.1)</code></pre>
+<pre><code>## Df Pillai approx F num Df den Df Pr(&gt;F)
+## health 3 0.084958 298.45 6 40364 &lt; 2.2e-16 ***
+## Residuals 20182
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1</code></pre>
+<pre class="r"><code>summary.aov(manova.1)</code></pre>
+<pre><code>## Response mdu :
+## Df Sum Sq Mean Sq F value Pr(&gt;F)
+## health 3 4253 1417.68 70.583 &lt; 2.2e-16 ***
+## Residuals 20182 405359 20.09
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1
+##
+## Response age :
+## Df Sum Sq Mean Sq F value Pr(&gt;F)
+## health 3 444702 148234 571.98 &lt; 2.2e-16 ***
+## Residuals 20182 5230352 259
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1</code></pre>
+<pre class="r"><code>DCs %&gt;% group_by(health) %&gt;% summarize(mean(mdu), mean(age))</code></pre>
+<pre><code>## # A tibble: 4 x 3
+##   health    `mean(mdu)` `mean(age)`
+##   &lt;fct&gt;           &lt;dbl&gt;       &lt;dbl&gt;
+## 1 excellent        2.63        21.8
+## 2 fair             3.69        33.7
+## 3 good             2.90        29.2
+## 4 poor             5.79        43.2</code></pre>
+<pre class="r"><code>pairwise.t.test(DCs$mdu, DCs$health, p.adj = &quot;none&quot;)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  DCs$mdu and DCs$health 
+## 
+##      excellent fair    good   
+## fair &lt; 2e-16   -       -      
+## good 7.7e-05   2.7e-10 -      
+## poor &lt; 2e-16   8.9e-14 &lt; 2e-16
+## 
+## P value adjustment method: none</code></pre>
+<pre class="r"><code>pairwise.t.test(DCs$age, DCs$health, p.adj = &quot;none&quot;)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  DCs$age and DCs$health 
+## 
+##      excellent fair   good  
+## fair &lt;2e-16    -      -     
+## good &lt;2e-16    &lt;2e-16 -     
+## poor &lt;2e-16    &lt;2e-16 &lt;2e-16
+## 
+## P value adjustment method: none</code></pre>
+<pre class="r"><code>1-.95^4</code></pre>
+<pre><code>## [1] 0.1854938</code></pre>
+<pre class="r"><code>0.05/4</code></pre>
+<pre><code>## [1] 0.0125</code></pre>
+<p><strong>I ran a MANOVA test to determine if the number of outpatient visits to a doctor and age vary across an individual’s health (excellent, good, fair, poor). The MANOVA that I ran shows that there is indeed a significant difference. Upon running univariate ANOVAs, it was determined that both number of doctor visits and age are significantly different across health groups on their own. Because of this, I ran a post-hoc test on both variables to determine specifically what groups are the ones that differ. The post-hoc test showed that there is a significant difference between all groups (excellent, good, fair, poor) of an individual’s health.</strong></p>
+<p><strong>I performed a total of four tests (two ANOVA tests and two t-tests), which means there is an 18.54938% chance there is at least one Type 1 error present. In addition, the Bonferroni correction was calculated to be 0.0125. My data likely meets most of the MANOVA assumptions as it is random and not obtained from surveys. The independent variable is categorical while the dependent variable is continuous, so this means the data meets another MANOVA assumption. It also appears that variance between groups is equal as the data was collected from a random sample. Finally, I would think that age and number of doctor visits have some sort of linear relationship with the health of an individual.</strong></p>
+<p><strong>2. RANDOMIZATION</strong></p>
+<pre class="r"><code>m.visits &lt;- DCs %&gt;% filter(sex %in% c(&quot;male&quot;)) %&gt;% select(mdu)
+m.visits &lt;- as.vector(t(m.visits))
+
+f.visits &lt;- DCs %&gt;% filter(sex %in% c(&quot;female&quot;)) %&gt;% select(mdu)
+f.visits &lt;- as.vector(t(f.visits))
+
+visits &lt;-data.frame(sex=c(rep(&quot;male visits&quot;,9751), rep(&quot;female visits&quot;,10435)), mdu = c(m.visits, f.visits))
+head(visits)</code></pre>
+<pre><code>##           sex mdu
+## 1 male visits   0
+## 2 male visits   2
+## 3 male visits   0
+## 4 male visits   0
+## 5 male visits   0
+## 6 male visits   0</code></pre>
+<pre class="r"><code>ggplot(visits, aes(mdu, fill=sex)) + geom_histogram(bins=5) + facet_wrap(~sex, ncol=2) + theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-5-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>DCs %&gt;% group_by(sex) %&gt;% summarize(means=mean(mdu)) %&gt;% summarize(`mean_diff:`=diff(means))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   `mean_diff:`
+##          &lt;dbl&gt;
+## 1       -0.830</code></pre>
+<pre class="r"><code>head(perm1&lt;-data.frame(sex = visits$sex, mdu = sample(visits$mdu)))</code></pre>
+<pre><code>##           sex mdu
+## 1 male visits   0
+## 2 male visits   2
+## 3 male visits   0
+## 4 male visits   2
+## 5 male visits   3
+## 6 male visits   0</code></pre>
+<pre class="r"><code>perm1 %&gt;% group_by(sex) %&gt;% summarize(means=mean(mdu)) %&gt;% summarize(`mean_diff:`=diff(means))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   `mean_diff:`
+##          &lt;dbl&gt;
+## 1       0.0810</code></pre>
+<pre class="r"><code>rand.dist&lt;-vector()
+for(i in 1:5000){
+  new &lt;- data.frame(mdu = sample(visits$mdu), sex = visits$sex)
+  rand.dist[i] &lt;- mean(new[new$sex == &quot;male visits&quot;,]$mdu) - mean(new[new$sex == &quot;female visits&quot;,]$mdu)}
+
+{hist(rand.dist, main = &quot;&quot;, ylab = &quot;&quot;); abline(v = -0.8297731, col=&quot;red&quot;)}</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-7-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>pairwise.t.test(DCs$mdu, DCs$sex, p.adj = &quot;none&quot;)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  DCs$mdu and DCs$sex 
+## 
+##      female
+## male &lt;2e-16
+## 
+## P value adjustment method: none</code></pre>
+<pre class="r"><code>mean(rand.dist&gt;0.8297731)*2</code></pre>
+<pre><code>## [1] 0</code></pre>
+<p><strong>I performed a randomization test between sex, either male which was named “m.visits” or female which I named “f.visits”, and the number of outpatient doctor visits. The null hypothesis is that the number of outpatient doctor visits is the same for males and females. The alternative hypothesis is that the number of outpatient doctor visits is different between males and females. I calculated the mean difference to be -0.8297731 by using the original data. I then randomized my data and placed a red line at -0.8297731 in the newly formed histogram. The red line is actually far off the to the left of the graph because there are no mean differences which are as extreme as the mean difference that I calculated using the original data. This was confirmed by the t-test which found the p-value to be essentially 0. This means that we can safely reject the null hypothesis and state that there is a significant difference in the number of outpatient doctor visits between males and females.</strong></p>
+<p><strong>3. LINEAR REGRESSION</strong></p>
+<pre class="r"><code>#linear regression
+
+DCs$mdu_c &lt;- DCs$mdu - mean(DCs$mdu)
+DCs$age_c &lt;- DCs$age - mean(DCs$age)
+
+fit&lt;-lm(mdu_c~age_c*sex, data= DCs)
+summary(fit)</code></pre>
+<pre><code>##
+## Call:
+## lm(formula = mdu_c ~ age_c * sex, data = DCs)
+##
+## Residuals:
+## Min 1Q Median 3Q Max
+## -4.851 -2.423 -1.384 0.658 73.544
+##
+## Coefficients:
+## Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept) 0.363319 0.043674 8.319 &lt;2e-16 ***
+## age_c 0.043069 0.002593 16.607 &lt;2e-16 ***
+## sexmale -0.788804 0.062846 -12.551 &lt;2e-16 ***
+## age_c:sexmale -0.039356 0.003749 -10.497 &lt;2e-16 ***
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1
+##
+## Residual standard error: 4.455 on 20182 degrees of
+freedom
+## Multiple R-squared: 0.02193, Adjusted R-squared: 0.02178
+## F-statistic: 150.8 on 3 and 20182 DF, p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>t.test(data=DCs,mdu_c~sex,var.eq=T)</code></pre>
+<pre><code>##
+## Two Sample t-test
+##
+## data: mdu_c by sex
+## t = 13.133, df = 20184, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means is not
+equal to 0
+## 95 percent confidence interval:
+## 0.7059324 0.9536139
+## sample estimates:
+## mean in group female mean in group male
+## 0.4008282 -0.4289449</code></pre>
+<pre class="r"><code>ggplot(DCs, aes(x=age_c, y=mdu_c, group=sex)) + geom_point(aes(color = sex)) + geom_smooth(method = &quot;lm&quot;, formula = y~1,se=F,fullrange = T,aes(color = sex)) + theme(legend.position = c(.945,.91)) + xlab(&quot;Age_C&quot;)</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-10-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><strong>For the linear regression I tried to predict the number of outpatients doctor visits based on the age and the sex of an individual. I also looked at the interactions between the variables. All of the coefficients from the fit test are significant. The results show that the number of outpatients doctor visits increases by 0.043069 every year of age. The test also shows that male individuals have a lower doctor visitation rate by 0.788804 visits/age when compared to females. Additionally, it was determined that the slope for the effect of age on doctor visits is 0.039356 units lower than the slope for the same interaction with the opposite sex.</strong></p>
+<pre class="r"><code>n_set&lt;-DCs
+n_set$age_c &lt;- mean(DCs$age_c)
+n_set$mean &lt;- predict(fit, n_set)
+n_set$age_c &lt;- mean(DCs$age_c)+sd(DCs$age_c)
+
+n_set$plus_sd &lt;- predict(fit, n_set)
+n_set$age_c &lt;- mean(DCs$age_c)-sd(DCs$age_c)
+n_set$minus_sd &lt;- predict(fit, n_set)
+
+my.colors&lt;-c(&quot;#FF0000&quot;,&quot;#0000FF&quot;,&quot;#33CC66&quot;)
+names(my.colors) &lt;- c(&quot;-1 sd&quot;,&quot;mean&quot;,&quot;+1 sd&quot;)
+my.colors = as.factor(my.colors)
+
+#Interaction Plot
+ggplot(DCs, aes(mdu_c, age_c), group = my.colors) + geom_point(color = &quot;#999999&quot;) + geom_line(data = n_set, aes(y = mean, color=&quot;mean&quot;)) + geom_line(data = n_set, aes(y = plus_sd, color = &quot;+1 sd&quot;)) + geom_line(data = n_set, aes(y = minus_sd, color=&quot;-1 sd&quot;)) + scale_color_manual(values = my.colors) + labs(color = &quot;Deviation&quot;) + theme(legend.position=c(.94,.13))</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-11-1.png" width="768" style="display: block; margin: auto;" />
+<strong>Upon plotting the interaction, I was given this very unique graph. The graph looks like this way because the values of number of visits does not vary much. This is why the points are super concentrated on the left side of the graph. Unfortunately, I am not able to discern much from simply looking at this ugly graph.</strong></p>
+<pre class="r"><code>res_vals &lt;- lm(mdu_c ~ age_c*sex, data = DCs)$residuals
+fitted &lt;- lm(mdu_c ~ age_c*sex, data = DCs)$fitted.values
+res_vals &lt;- fit$residuals
+fit_vals &lt;- fit$fitted.values
+
+#Checks for homoskedasticity and linearity
+ggplot() + geom_point(aes(fit_vals, res_vals)) + geom_hline(yintercept = 0, color = &#39;orange&#39;)</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-12-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><strong>Upon checking for homoskedacity and linearity I found that the plot exibits heteroskadacity and is not linear.</strong></p>
+<pre class="r"><code>ggplot() + geom_qq(aes(sample=res_vals)) + geom_qq_line(aes(sample = res_vals, color = &quot;red&quot;))</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-13-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot() + geom_histogram(aes(res_vals), bins = 20)</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-14-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ks.test(res_vals, &quot;pnorm&quot;, mean=0, sd(res_vals)) </code></pre>
+<pre><code>## 
+##  One-sample Kolmogorov-Smirnov test
+## 
+## data:  res_vals
+## D = 0.19205, p-value &lt; 2.2e-16
+## alternative hypothesis: two-sided</code></pre>
+<p><strong>The plots and the “ks test” show that the data is most definitely not normal. The histogram is skewed. The qq-plot shows how the points don’t follow a line, but instead curve exponentially. The ks test shows that the D value is 0.19205 and has a significant p-value and we must reject the null that states that my data is normal.</strong></p>
+<pre class="r"><code>robust_fit &lt;- lm(mdu_c ~ age_c*sex, data = DCs)
+bptest(robust_fit)</code></pre>
+<pre><code>## 
+##  studentized Breusch-Pagan test
+## 
+## data:  robust_fit
+## BP = 54.693, df = 3, p-value = 7.985e-12</code></pre>
+<pre class="r"><code>summary(robust_fit)$coef[,1:2]</code></pre>
+<pre><code>##                  Estimate  Std. Error
+## (Intercept)    0.36331934 0.043674171
+## age_c          0.04306873 0.002593389
+## sexmale       -0.78880424 0.062845658
+## age_c:sexmale -0.03935624 0.003749449</code></pre>
+<pre class="r"><code>coeftest(robust_fit, vcov = vcovHC(robust_fit))[,1:2]</code></pre>
+<pre><code>##                  Estimate  Std. Error
+## (Intercept)    0.36331934 0.046327657
+## age_c          0.04306873 0.003094622
+## sexmale       -0.78880424 0.061933857
+## age_c:sexmale -0.03935624 0.004349735</code></pre>
+<p><strong>The results of the Breusch-Pagan test gave a p-value of less than 0.05, therefore we can safely reject the null hypothesis. This means that my data is heteroskedastic. When using the robust standard error, you can see that the standard error of the intercept, the age, and the interaction increased while the standard error for the male sex decreased.</strong></p>
+<pre class="r"><code>(sum((DCs$mdu_c - mean(DCs$mdu_c))^2) - sum(fit$residuals^2)) / sum((DCs$mdu_c - mean(DCs$mdu_c))^2)</code></pre>
+<pre><code>## [1] 0.02192988</code></pre>
+<p><strong>My model explains 2.19% of the variation in the outcome.</strong></p>
+<p><strong>4. BOOTSTRAPPING</strong></p>
+<pre class="r"><code>set.seed(500)
+
+boot_dat &lt;- sample_frac(DCs, replace=T)
+samp_distn &lt;- replicate(5000, {
+boot_dat &lt;- sample_frac(DCs, replace=T)
+boot_fit &lt;- lm(mdu_c ~ age_c*sex, data = boot_dat)
+coef(boot_fit)
+})
+samp_distn %&gt;% t %&gt;% as.data.frame %&gt;% summarize_all(sd)</code></pre>
+<pre><code>##   (Intercept)       age_c    sexmale age_c:sexmale
+## 1  0.04633015 0.003121891 0.06275036   0.004353109</code></pre>
+<p><strong>The bootstrapped standard errors were 0.04633015 for the intercept, 0.003121891 for the age, 0.06275036 for the male sex, and 0.004353109 for the interaction between age and the male sex. All of these standard errors appear to be very close but slightly greater than the robust errors. The bootstrap standard errors will likely have a p-value of less than 0.05 just like the robust standard errors because they are so similar. The original standard errors were 0.043674171 for the intercept, 0.002593389 for the age, 0.062845658 for the male sex, and 0.003749449 for the interaction. These standard errors are all much smaller than the bootstrap standard errors that were just found.</strong></p>
+<p><strong>5. LOGISTIC REGRESSION</strong></p>
+<pre class="r"><code>DCs &lt;- DCs %&gt;% mutate(Sex = ifelse(sex == &quot;male&quot;, 0, 1))
+fit_2 &lt;- glm(Sex ~ age + mdu, data=DCs, family = &quot;binomial&quot;)
+
+coeftest(fit_2)</code></pre>
+<pre><code>##
+## z test of coefficients:
+##
+## Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept) -0.19480816 0.02711190 -7.1853 6.704e-13 ***
+## age 0.00543123 0.00085121 6.3806 1.764e-10 ***
+## mdu 0.04414244 0.00365067 12.0916 &lt; 2.2e-16 ***
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1</code></pre>
+<pre class="r"><code>exp(coef(fit_2))</code></pre>
+<pre><code>## (Intercept)         age         mdu 
+##   0.8229925   1.0054460   1.0451312</code></pre>
+<p><strong>The estimates for the intercept coefficient is -0.19480816, 0.00543123 for the age coefficient, and 0.04414244 for the mdu coefficient. All three of these coefficients are significant, so we can safely reject the null hypothesis that states there is not a significant relationship between the variables.</strong></p>
+<pre class="r"><code>prob &lt;- predict(fit_2, type = &quot;response&quot;)
+predict &lt;- ifelse(prob &gt; .5, 1, 0)
+table(prediction = predict, truth = DCs$Sex) %&gt;% addmargins()</code></pre>
+<pre><code>##           truth
+## prediction     0     1   Sum
+##        0    4749  4142  8891
+##        1    5002  6293 11295
+##        Sum  9751 10435 20186</code></pre>
+<pre class="r"><code>#accuracy
+(4749 + 6293) / 20186</code></pre>
+<pre><code>## [1] 0.5470128</code></pre>
+<pre class="r"><code>#sensitivity (TPR)
+4749 / 8891</code></pre>
+<pre><code>## [1] 0.5341356</code></pre>
+<pre class="r"><code>#specificity (TNR)
+6293 / 11295</code></pre>
+<pre><code>## [1] 0.5571492</code></pre>
+<pre class="r"><code>#precision (PPV)
+4749 / 9751</code></pre>
+<pre><code>## [1] 0.487027</code></pre>
+<p><strong>The accuracy was calculated to be 54.70%, the TPR is 53.41%, the TNR is 55.71% and the PPV is 48.70%. All of these values are roughly around 50%, therefore I can say that my model will accurately calculate true positive and negative rates only about half of the time. The other half it will be incorrect. In addition, since the precision is 48.70%, the age and the number of outpatient visits will only be categorized into the correct sex less than half of the time.</strong></p>
+<pre class="r"><code>DCs$logit &lt;- predict(fit_2, type = &quot;link&quot;)
+
+ggplot(DCs, aes(logit, fill = as.factor(Sex))) + geom_density(alpha = .3) + 
+  theme(legend.position = c(.63, .85))+ geom_vline(xintercept = 0) + xlab(&quot;predictor (logit)&quot;)</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-22-1.png" width="768" style="display: block; margin: auto;" />
+<strong>This graph depicts exactly what I talked about earlier. The two curves overlap a lot, which means that the model is not very good. This means that a large majority of ages and doctor visits are incorrectly categorized into sex.</strong></p>
+<pre class="r"><code>ROCplot &lt;- ggplot(DCs) + geom_roc(aes(d = Sex, m = prob), n.cuts = 0) 
+ROCplot</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-23-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>calc_auc(ROCplot)</code></pre>
+<pre><code>##   PANEL group       AUC
+## 1     1    -1 0.5623953</code></pre>
+<p><strong>The ROC plot has an AUC of 0.5623953, which is very slightly about 0.5. This bad AUC is consistent with the previous graph as well. This is also indicative of a poor model that will likely incorrectly categorize an individual’s observations into the wrong sex.</strong></p>
+<pre class="r"><code>class_diag &lt;- function(probs, truth){
+
+tab &lt;- table(factor(probs &gt; .5, levels=c(&quot;FALSE&quot;, &quot;TRUE&quot;)), truth)
+acc = sum(diag(tab)) / sum(tab)
+sens=tab[2,2]/colSums(tab)[2]
+spec=tab[1,1]/colSums(tab)[1]
+ppv=tab[2,2]/rowSums(tab)[2]
+if(is.numeric(truth)==FALSE &amp; is.logical(truth)==FALSE) truth&lt;-as.numeric(truth)-1
+
+ord&lt;-order(probs, decreasing=TRUE)
+probs &lt;- probs[ord]; truth &lt;- truth[ord]
+TPR=cumsum(truth)/max(1,sum(truth))
+FPR=cumsum(!truth)/max(1,sum(!truth))
+dup&lt;-c(probs[-1]&gt;=probs[-length(probs)], FALSE)
+TPR&lt;-c(0,TPR[!dup],1); FPR&lt;-c(0,FPR[!dup],1)
+n &lt;- length(TPR)
+auc&lt;- sum( ((TPR[-1]+TPR[-n])/2) * (FPR[-1]-FPR[-n]) )
+data.frame(acc,sens,spec,ppv,auc)
+} 
+
+class_diag(prob, DCs$Sex)</code></pre>
+<pre><code>##         acc      sens     spec       ppv       auc
+## 1 0.5470128 0.6030666 0.487027 0.5571492 0.5624019</code></pre>
+<pre class="r"><code>set.seed(500)
+k=10 
+data &lt;- DCs[sample(nrow(DCs)), ] 
+folds &lt;- cut(seq(1:nrow(DCs)), breaks=k, labels = F)
+diags &lt;- NULL
+for(i in 1:k){
+train &lt;- data[folds!=i, ]
+test &lt;- data[folds==i, ]
+truth &lt;- test$Sex 
+
+fit5 &lt;- glm(Sex ~ age + mdu, data = train, family = &quot;binomial&quot;)
+probs &lt;- predict(fit5, newdata = test, type=&quot;response&quot;)
+diags &lt;- rbind(diags, class_diag(probs, truth))
+}
+summarize_all(diags,mean)</code></pre>
+<pre><code>##         acc      sens      spec       ppv       auc
+## 1 0.5483029 0.6047739 0.4891591 0.5590492 0.5623469</code></pre>
+<p><strong>The 10-fold CV returned 0.5483029 for accuracy, 0.6047739 for sensitivity, and 0.4891591 for specificity. The AUC was also found to be 0.5623469. All of these values are very similar to the originals shown above.</strong></p>
+<p><strong>6. LASSO</strong></p>
+<pre class="r"><code>DC_2 &lt;- DCs %&gt;% select(-mdu_c, -age_c, -logit, -sex)
+head(DC_2)</code></pre>
+<pre><code>## X mdu physlim ndisease health linc lfam educdec age Sex
+## 1 1 0 FALSE 13.73189 good 9.528776 1.386294 12 42.87748
+0
+## 2 2 2 FALSE 13.73189 good 9.528776 1.386294 12 43.87748
+0
+## 3 3 0 FALSE 13.73189 good 9.528776 1.386294 12 44.87748
+0
+## 4 4 0 FALSE 13.73189 good 9.528776 1.386294 12 45.87748
+0
+## 5 5 0 FALSE 13.73189 good 9.528776 1.386294 12 46.87748
+0
+## 6 6 0 FALSE 13.73189 excellent 9.528776 1.386294 12
+16.59138 0</code></pre>
+<pre class="r"><code>y &lt;- as.matrix(DC_2$Sex) 
+x &lt;- model.matrix(Sex ~ ., data = DC_2) [,-1]
+x &lt;- scale(x)
+cv &lt;- cv.glmnet(x, y)
+lasso &lt;- glmnet(x, y, family = &quot;binomial&quot;, lambda = cv$lambda.1se)
+coef(lasso)</code></pre>
+<pre><code>## 12 x 1 sparse Matrix of class &quot;dgCMatrix&quot;
+##                       s0
+## (Intercept)  0.075353518
+## X            0.032435454
+## mdu          0.072729989
+## physlimTRUE  .          
+## ndisease     0.372160888
+## healthfair   .          
+## healthgood   0.016295863
+## healthpoor   .          
+## linc        -0.040841880
+## lfam        -0.003195794
+## educdec      .          
+## age          .</code></pre>
+<pre class="r"><code>class_diag(prob, DC_2$Sex)</code></pre>
+<pre><code>##         acc      sens     spec       ppv       auc
+## 1 0.5470128 0.6030666 0.487027 0.5571492 0.5624019</code></pre>
+<pre class="r"><code>set.seed(500)
+k = 10 
+data &lt;- DC_2[sample(nrow(DC_2)),] 
+folds &lt;- cut(seq(1:nrow(DC_2)), breaks = k, labels = F) 
+diags &lt;- NULL
+for(i in 1:k){
+train &lt;- data[folds != i,]
+test &lt;- data[folds == i,]
+truth &lt;- test$Sex 
+fit6 &lt;- glm(Sex ~ ., data = train, family = &quot;binomial&quot;)
+probs &lt;- predict(fit6, newdata = test, type = &quot;response&quot;)
+diags &lt;- rbind(diags, class_diag(probs, truth))
+}
+
+summarize_all(diags, mean) </code></pre>
+<pre><code>##         acc      sens      spec       ppv       auc
+## 1 0.5777772 0.6113416 0.5420925 0.5882435 0.6208999</code></pre>
+<p><strong>The output from this test suggests that number of chronic diseases is by far the most predictive variable for sex. This is followed by the number of outpatient doctor visits. The CV gave me almost identical values to that of the logistic regression test.</strong></p>
+
+            
+        <hr>         <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+              </div> 
+            </div>
+          </div>
+
+   <hr>  <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div> 
+        </div>
+      </div>
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="../../js/docs.min.js"></script>
+<script src="../../js/main.js"></script>
+
+<script src="../../js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

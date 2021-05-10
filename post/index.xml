@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on My Site</title>
+    <link>/post/</link>
+    <description>Recent content in Posts on My Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Sun, 09 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Blog Post</title>
+      <link>/post/2021/05/09/my-post/</link>
+      <pubDate>Sun, 09 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2021/05/09/my-post/</guid>
+      <description> # Python Code nakia_bio ={ &amp;#39;firstName&amp;#39;: &amp;#39;Nakia&amp;#39;, &amp;#39;middleName&amp;#39;: &amp;#39;Ulysses&amp;#39;, &amp;#39;lastName&amp;#39;: &amp;#39;Armendariz&amp;#39;, &amp;#39;hobbies&amp;#39;: [&amp;#39;basketball&amp;#39;, &amp;#39;tennis&amp;#39;, &amp;#39;racquetball&amp;#39;], &amp;#39;siblings&amp;#39;: [&amp;#39;Naomy&amp;#39;, &amp;#39;Kiabet&amp;#39;], &amp;#39;age&amp;#39;: 22, } nakia_bio[&amp;#39;hobbies&amp;#39;].append(&amp;#39;spikeball&amp;#39;) print(nakia_bio.keys()) ## dict_keys([&amp;#39;firstName&amp;#39;, &amp;#39;middleName&amp;#39;, &amp;#39;lastName&amp;#39;, &amp;#39;hobbies&amp;#39;, &amp;#39;siblings&amp;#39;, &amp;#39;age&amp;#39;]) print(nakia_bio.values()) ## dict_values([&amp;#39;Nakia&amp;#39;, &amp;#39;Ulysses&amp;#39;, &amp;#39;Armendariz&amp;#39;, [&amp;#39;basketball&amp;#39;, &amp;#39;tennis&amp;#39;, &amp;#39;racquetball&amp;#39;, &amp;#39;spikeball&amp;#39;], [&amp;#39;Naomy&amp;#39;, &amp;#39;Kiabet&amp;#39;], 22]) print(nakia_bio) ## {&amp;#39;firstName&amp;#39;: &amp;#39;Nakia&amp;#39;, &amp;#39;middleName&amp;#39;: &amp;#39;Ulysses&amp;#39;, &amp;#39;lastName&amp;#39;: &amp;#39;Armendariz&amp;#39;, &amp;#39;hobbies&amp;#39;: [&amp;#39;basketball&amp;#39;, &amp;#39;tennis&amp;#39;, &amp;#39;racquetball&amp;#39;, &amp;#39;spikeball&amp;#39;], &amp;#39;siblings&amp;#39;: [&amp;#39;Naomy&amp;#39;, &amp;#39;Kiabet&amp;#39;], &amp;#39;age&amp;#39;: 22} # R Code library(reticulate) py$nakia_bio[&amp;#39;middleName&amp;#39;] ## $middleName ## [1] &amp;quot;Ulysses&amp;quot; py$nakia_bio[&amp;#39;siblings&amp;#39;] ## $siblings ## [1] &amp;quot;Naomy&amp;quot; &amp;quot;Kiabet&amp;quot; py$nakia_bio[&amp;#39;hobbies&amp;#39;] ## $hobbies ## [1] &amp;quot;basketball&amp;quot; &amp;quot;tennis&amp;quot; &amp;quot;racquetball&amp;quot; &amp;quot;spikeball&amp;quot; </description>
+    </item>
+    
+  </channel>
+</rss>

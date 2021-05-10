@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Projects on My Site</title>
+    <link>/project/</link>
+    <description>Recent content in Projects on My Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language><atom:link href="/project/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Project 1</title>
+      <link>/project/project1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/project/project1/</guid>
+      <description>For this project, I decided to look into mean SAT scores and graduation rates of all school districts in the state of Texas. I felt like there must be some sort of correlation between a district’s SAT score and their graduation rates. I tried to find data sets already in R but none of them really interested me. I happened upon the Texas Education Agency website and found that they had this data by graduation year.</description>
+    </item>
+    
+    <item>
+      <title>Project 2</title>
+      <link>/project/project2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/project/project2/</guid>
+      <description>In this project I looked into a data set that contained personal information about individuals who had contact with medical doctors from 1977 to 1978. The data set didn’t specify what country the information was collected from. Although there are many interesting variables that I think would be interesting to see interactions with, I chose to only focus on the ones that I deem more important. I primarily focused on the number of visits to an outpatient doctor (mdu), age of the individual, health of the individual, and the sex of the individual.</description>
+    </item>
+    
+  </channel>
+</rss>

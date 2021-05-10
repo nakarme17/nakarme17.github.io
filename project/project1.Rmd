@@ -1,0 +1,169 @@
+---
+title: "Project 1"
+author: "Nakia Armendariz"
+date: "3/31/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, fig.align = "center", 
+    warning = F, message = F, tidy = TRUE, tidy.opts = list(width.cutoff = 60), 
+    R.options = list(max.print = 100))
+```
+
+For this project, I decided to look into mean SAT scores and graduation rates of all school districts in the state of Texas. I felt like there must be some sort of correlation between a district's SAT score and their graduation rates. I tried to find data sets already in R but none of them really interested me. I happened upon the Texas Education Agency website and found that they had this data by graduation year. So, I decided to look at specifically 2017 data as that was the year that I graduated from high school. 
+
+```{R}
+
+library(ggplot2)
+library(tidyverse)
+sat_data2017_all <- read.csv("sat_district_data_class_2017.csv")
+gradRate_data2017_all <- read.csv("District_Data_Download_4yr_2017.csv")
+head(sat_data2017_all)
+```
+
+```{R}
+head(gradRate_data2017_all)
+```
+
+```{R}
+sat_data <- sat_data2017_all %>% filter(Group == "All Students") %>% select(DistName, CntyName, ERW, Math, Total) %>% glimpse()
+```
+
+```{R}
+gradRate_data <- gradRate_data2017_all %>% filter(CALC_FOR_STATE_ACCT == "Yes") %>% select(DISTNAME, DIST_ALLR_GRAD, DIST_ALLR_DROP, DistName = DISTNAME, DistGradRate = DIST_ALLR_GRAD, DistDropRate = DIST_ALLR_DROP) %>% glimpse()
+```
+Each data set had entirely too much information that was not needed for my analysis. The SAT score set had scores divided up into ethnicities and gender. So I just used the mean math, reading, and total scores of all students. The graduation data set had the school's region, district number, and other observations. Therefore, I decided to only use the district's name, graduation rate, and drop rate. I also included the county names from the data sets to give me a visual of where in the state these districts were located. 
+
+```{R}
+complete_data <- full_join(sat_data, gradRate_data, by = "DistName")
+glimpse(complete_data)
+```
+```{R}
+complete_data <- complete_data %>% na.omit() %>% arrange(DistName)
+summary(complete_data)
+```
+```{R}
+glimpse(complete_data)
+```
+Because I would be joining the two data sets by district names and county names, I decided to do a full join. After joining the two data sets, I omitted the lines where there was data missing. Some schools did not have subscores posted on this data sheet for whatever reason. I felt that it would be easier to analyze my data without having to worry about incomplete observations. 
+
+```{R}
+devFromMeanTotal <- function(Total) {Total - mean(complete_data$Total)}
+complete_data <- complete_data %>% 
+  mutate(devFromMeanTotal = devFromMeanTotal(Total))
+glimpse(complete_data)
+```
+Next, I mutated my dataset and created a new variable called devFromMeanTotal. This showed the difference between a district's mean SAT score and SAT score average of all school districts. A negative value meant that their score was below the average while a positive value meant that they were above the average. 
+
+```{R}
+mean(complete_data$Total)
+complete_data %>% group_by(CntyName) %>% 
+  summarize(mean_SAT = mean(Total, na.rm=T))
+```
+```{R}
+complete_stats <- complete_data %>% summarize_at(3:8, .funs = list(Mean = mean, StDev = sd, Var. = var, Max = max, Min = min, N_Distinct = n_distinct, Length = length, IQR = IQR, Median = median))
+
+grouped_stats <- complete_data %>% group_by(CntyName) %>% summarize_at(3:7, .funs = list(Mean = mean, StDev = sd, Var. = var, Max = max, Min = min, N_Distinct = n_distinct, Length = length, Median = median))
+
+tidy_stats <- complete_stats %>% pivot_longer(contains("_"), names_to = "name", 
+    values_to = "value") %>% separate(name, c("name", "function"), 
+    sep = "_") %>% pivot_wider(names_from = "function", values_from = "value") 
+
+glimpse(tidy_stats)
+```
+After that, I ran summary statistics on my data. I ran mean, standard deviation, variance, max, min, n_distinct, length, IQR, and median. I ran them on the normal data and also my data grouped by county name. I then tidied up the stats table because it gave me a lot of variables with only one observation, so it was very hard to read. I was able to condense the table into observations in 10 columns. I found really shocking that the graduation rates ranged from 100% all the way down to 17.1%. Inversely, I also thought it was crazy that there is a school district in Texas that has a student drop rate of 68.3%! This stats table was able to give me a lot of interesting information quickly. 
+
+```{R}
+
+numerical_data <- complete_data %>% na.omit %>% select("ERW", "Math", "Total", "DistGradRate", "DistDropRate", "devFromMeanTotal")
+
+cor_data <- cor(numerical_data)
+
+tidy_cor <- cor(numerical_data) %>% as.data.frame %>% rownames_to_column %>% pivot_longer(-1, names_to = "columns", values_to = "correlation")
+
+head(tidy_cor)
+```
+
+```{R}
+tidy_cor %>% ggplot(aes(rowname, columns, fill = correlation)) + 
+  geom_tile() + geom_text(aes(label = round(correlation, 2)), color = "black", size = 4) +
+  scale_fill_gradient2(low = "red", mid = "white", high = "green") + 
+  ggtitle("Correlation Heatmap of SAT & Graduation Rates/Drop Rates") + xlab("") +
+  ylab("") + coord_fixed() + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+```{R}
+
+focused_districts <- complete_data %>% filter(DistName %in% c("Dallas ISD", "Houston ISD", "Austin ISD", "Midland ISD")) %>% select(DistName, CntyName, Math, ERW, Total) 
+
+
+ggplot(focused_districts, aes( x= DistName, fill = CntyName)) + geom_bar(aes(y = Total), stat = "summary", fun.y = "mean") + scale_y_continuous(breaks = seq(0, 1600, 100)) + xlab("District") + ylab("Mean SAT Total") + ggtitle("Mean SAT Total for Biggest District in Four Texas Counties")
+
+```
+
+```{R}
+ggplot(data = complete_data, aes( x= DistGradRate, y = Total, color = CntyName)) + 
+  geom_point(size = 3) + ggtitle("District Graduation Rates vs SAT Score of Districts in Texas Colored by County") + xlab("District Graduation Rate") + ylab("SAT Score") +
+  theme(legend.position = "none")
+```
+After creating my correlation heatmap, I found that the district graduation rate had very little correlation with the math and English subscores or the SAT total score. The highest value between those was 0.29. The English subscore and the total score had the highest correlation at 0.97, which I expected.
+
+For the bar chart, I focused on the 4 biggest school districts in 4 specific counties. The first two counties are the biggest counties in Texas: Harris county and Dallas county. The next county was Travis county, for obvious reasons. And the final county was my home county: Midland county. I found that the two biggest counties, Dallas and Harris, actually had the lowest SAT score averages. I think that this may be because the sheer size of the population can tend to bring the average down. I did expect Austin ISD to have a higher SAT score, but I did not expect my own Midland ISD to be right behind it. 
+
+For my scatterplot, I plotted graduation rates versus SAT scores by district. I also colored them by county. Just from looking at it, there does not appear to be any sort of correlation between the two numerical variables. I didn't bother including a legend because the points are too jumbled up. So far, I am very disappointed with the relationship between district graduation rates and district SAT scores. 
+
+
+```{R}
+complete_data_1 <- complete_data %>% select(DistName, DistGradRate, Math, ERW, Total)
+num_data <- complete_data_1 %>% select_if(is.numeric) %>% scale
+pca_data <- princomp(num_data)
+names(pca_data)
+```
+```{R}
+summary(pca_data, loadings = T)
+```
+```{R}
+eigen_value <- pca_data$sdev^2
+varprop = round(eigen_value/sum(eigen_value), 2)
+ggplot() + geom_bar(aes(y = varprop, x = 1:4), stat = "identity") + 
+  geom_path(aes(y = varprop, x = 1:4)) + geom_text(aes(x = 1:4, y = varprop, label = round(varprop, 3)), col = "white", vjust = 1, size = 4) + xlab("") + scale_x_continuous(breaks = 1:4) + scale_y_continuous(breaks = seq(0, 0.8, 0.2))
+```
+
+```{R}
+eigen(cor(num_data))
+```
+```{R}
+data_frame <- data.frame(PC1 = pca_data$scores[,1], PC2 = pca_data$scores[,2])
+ggplot(data_frame, aes(PC1, PC2)) + geom_point()
+```
+
+```{R}
+District <- complete_data$DistName
+# Highest PC1
+pca_data$scores %>% as.data.frame %>% cbind(District, .) %>% top_n(3, Comp.1)
+```
+
+```{R}
+# Lowest PC1
+pca_data$scores %>% as.data.frame %>% cbind(District, .) %>% top_n(3, wt = desc(Comp.1))
+```
+```{R}
+# Highest PC2
+pca_data$scores %>% as.data.frame %>% cbind(District, .) %>% top_n(3, Comp.2)
+```
+
+```{R}
+# Lowest PC2
+pca_data$scores %>% as.data.frame %>% cbind(District, .) %>% top_n(3, wt = desc(Comp.2))
+```
+
+```{R}
+pca_data$loadings[1:4, 1:2] %>% as.data.frame %>% rownames_to_column %>% ggplot() + 
+  geom_hline(aes(yintercept = 0), lty = 2) + geom_vline(aes(xintercept = 0), lty = 2) + 
+  geom_segment(aes(x = 0, y = 0, xend = Comp.1, yend = Comp.2), arrow = arrow(), col = "red") + geom_label(aes(x = Comp.1 * 1.1, y = Comp.2 * 1.1, label = rowname)) + xlab("PC1") + ylab("PC2")
+```
+I ran a PCA on my data set to determine if there was any clear variance within the data. I focused on the district graduation rates, the math subscore, the English subscore, and the total SAT score. According to the first plot, 96% of the variance is accounted for in PC1 and PC2. The loadings show that all my variables have a small, but positive correlation in PC1. The PC2 loadings show that the district graduation rate has a positive correlation, but the other three variables have a negative correlation. In the scatterplot, you can see a discernable line across the top. I'm not entirely sure why that is there, but you can see that there is more variance across the PC1 than PC2 by looking at the distribution of the points. This is supported by the first plot, which shows that PC1 accounts for 74% of the data variance. The PCA arrow graph also shows that all the PC1 loading correlations were in fact positive while only the district graduation rate PC2 loading was positive. The math subscore, the English subscore, and the total score display a negative PC2 loading as discussed before. 
+
+
+
